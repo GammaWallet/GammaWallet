@@ -2,7 +2,7 @@
     "version": "1.0.3",
     "manifest_version": 3,
     "name": "GammaWallet",
-    "description": "Onchain trading with self custody. The next level of onchain trading.",
+    "description": "Onchain trading with self custody.. The next level of onchain trading.",
     "action": {
         "default_popup": "source/index.html",
         "default_title": "GammaWallet - Onchain trading"
