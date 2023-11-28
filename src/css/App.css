@@ -1,0 +1,219 @@
+body {
+  overflow: hidden !important;
+}
+
+:root {
+  --dark : #222831;
+  --blue: #393E46;
+  --pink: #5C9184;
+  --light: #EEEEEE;
+}
+
+
+.root {
+  width: 357px !important;
+  height: 560px !important;
+  overflow-x: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color:var(--dark);
+  color: var(--light) !important;
+}
+
+
+.btn-primary {
+  background-color:var(--blue);
+  color: var(--light);
+  border: 1px solid var(--blue);
+  font-size: 0.875rem;
+  line-height: 140%;
+  font-style: normal;
+  font-weight: normal;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 20px;
+  font-weight: 400;
+  box-shadow: none;
+  border-radius: 100px;
+}
+
+.btn-primary:hover {
+  background-color:var(--blue);
+  opacity: 0.95;
+  border: 1px solid var(--blue);
+}
+
+.btn-primary:active {
+  background-color: var(--pink);
+}
+
+.newuserpage-container {
+  color: var(--color-text-default);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 30px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.newuserpage-title {
+  font-size: 2rem;
+    font-family: "Euclid Circular B", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 140%;
+    font-style: normal;
+    font-weight: normal;
+    margin-top: 5px;
+    font-weight: 800;
+    
+  }
+
+
+.newuserpage-logo-container {
+  margin-top: 24px;
+    position: relative;
+}
+
+.modal-content {
+  border-radius: 0;
+}
+
+.gammaNav {
+  box-shadow: 0 2px 16px 0 #00000080;
+}
+
+.gammaNav .navbar-nav {
+  width: 100%;
+}
+
+.gammaNav .nav-link {
+  width: 33%;
+  text-align: center;
+}
+
+.gammaNav li {
+  font-size: 0.875rem;
+    font-family: "Euclid Circular B", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 140%;
+    font-style: normal;
+    font-weight: normal;
+    flex-grow: 1;
+    color: var(--color-icon-default);
+    font-weight: 500;
+}
+
+.trade-balance {
+
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  align-items: center;
+  margin: 16px 0;
+  padding: 0 16px;
+  max-width: 326px;
+
+  font-size: 1rem;
+  font-family: "Euclid Circular B", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 140%;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--light);
+
+}
+
+.trade-swap {
+  padding: 24px 16px 20px 16px;
+    border-radius: 6px 6px 0 0;
+    box-shadow: none;
+    border: 1px solid var(--color-border-muted);
+    margin-top: 16px;
+    position: relative;
+}
+
+.trade-form input {
+  border-radius:  0;
+  padding-bottom: 10px;
+  margin-bottom:10px;
+  border-radius: 5px;
+}
+
+.trade-form input:focus {
+  box-shadow: 0 2px 16px 0 #00000080;
+}
+
+.toast {
+  background-color: var(--blue);
+}
+
+.secret-phrase:hover {
+  cursor: pointer;
+  opacity: 0.95;
+}
+
+.portfolio {
+  margin: 10px;
+  height: 210px;
+  padding: 10px;
+  overflow-y: scroll;
+  border-radius: 0.375em;
+  background-color: #EEEEEE;
+  /* border: 1px dashed #eeeeee; */
+  border-right: none;
+}
+
+.portfolio button {
+  width: 250px !important;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the thumb */
+  border-radius: 6px; /* Roundness of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the thumb on hover */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the track */
+  border-radius: 6px; /* Roundness of the track */
+}
+
+::-webkit-scrollbar-track:hover {
+  background-color: #ddd; /* Color of the track on hover */
+}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+code:hover {
+  cursor: pointer;
+}
+.portfolio > .list-group > li {
+  transition: all 0.3s ease;
+}
+
+.portfolio > .list-group > li:hover {
+  opacity: 0.8;
+  cursor: pointer;
+  
+  background-color: #eee;
+}
