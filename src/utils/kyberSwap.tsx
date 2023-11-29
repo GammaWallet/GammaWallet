@@ -308,7 +308,7 @@ export const buildAndSimulate = async (from:string,to:string,amount:number,currU
 
 
 export const findOptimalSlippage = async (from:string,to:string,amount:number,currUserAccount:IUserAccount,maxSlippage:number,mevProtect:boolean | undefined) => {
-    
+    /*
     let l = 0.5
     let r = 20
     let res = 0.5
@@ -323,14 +323,14 @@ export const findOptimalSlippage = async (from:string,to:string,amount:number,cu
             l = mid/100 + 1
         }
     }
-
-    /*
+*/
+    
     let res = 0.5
-    for(let i = 0.5;i < 100;i+=3) {
+    for(let i = 0.5;i < 100;i+=5) {
         let curr = await buildAndSimulate(from,to,amount,currUserAccount,i*100,mevProtect)
         if(curr) return i
     }
-    */
+    
 
     return res
 

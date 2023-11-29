@@ -5,7 +5,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { IGammaData } from '../../utils/userAccount';
 import { IUserAccount } from '../../utils/userAccount';
 import utils from '../../utils/utils';
-import AddAccount from './AddAccount';
+import AddAccount from '../../components/core/AddAccount/AddAccount'
 import { getAccountBalance } from '../../utils/onchain';
 import Trade from './Trade';
 import Button from 'react-bootstrap/Button';
@@ -25,57 +25,13 @@ interface AccountInfo {
 
 const BuyToken = () => {
 
-  let [userAccounts,setUserAccounts] = useState<Array<IUserAccount>>()
-  let [userGammaData,setUserGammaData] = useState<IGammaData>()
+  
   let [currAccount,setCurrAccount] = useState<IUserAccount>()
   let [currAccountInfo,setCurrAccountInfo] = useState<AccountInfo>()
   const navigate = useNavigate();
 
-  
-  const getUserData = async () => {
-    const resp = await userAccount.getGammaData()
-    //console.log(resp)
-    setUserAccounts(resp.userAccounts)
-    setUserGammaData(resp)
-    if(resp.userAccounts.length) {
-      setCurrAccount(resp.userSettings.lastUsedAccount)
-    }
-  }
-
-  const addNewAccount = async () => {
-    if(!userGammaData || !userAccounts) {
-      //console.log("ERROR user data or account not found")
-      return
-    }
-    const hdNode = ethers.utils.HDNode.fromMnemonic(userGammaData?.userMnemonic)
-    const nextAddressIndex = userAccounts?.length
-    const extendedKey = hdNode.derivePath(`m/44'/60'/0'/0/${nextAddressIndex}`);
-    const privateKey = extendedKey.privateKey;
-    const address = ethers.utils.computeAddress(extendedKey.publicKey);
-    let newAccount : IUserAccount = {
-      address:address,
-      privateKey:privateKey,
-      tokens : []
-    }
-    await userAccount.setGammaData({...userGammaData,userAccounts:[...userAccounts,newAccount]})    
-    setUserGammaData({...userGammaData,userAccounts:[...userAccounts,newAccount]})
-    setUserAccounts([...userAccounts,newAccount])
-    
-    setCurrAccount(newAccount)
-    
-  }
-
-  const changeAccount = async (newAccount:IUserAccount) => {
-    setCurrAccount(newAccount)
-    if(!userGammaData) return
-    await userAccount.setGammaData({...userGammaData,userSettings:{
-        ...userGammaData.userSettings,
-        lastUsedAccount : newAccount
-    }})    
-    setUserGammaData({...userGammaData,userSettings:{
-        ...userGammaData.userSettings,
-        lastUsedAccount : newAccount
-    }})
+  const setCurrUserAccount = async (account:IUserAccount) => {
+    setCurrAccount(account)
   }
 
   const getCurrAccountInfo = async (currAccount:IUserAccount) => {
@@ -95,8 +51,6 @@ const BuyToken = () => {
       }
     }
     fetchAccountStatus();
-
-    getUserData()
   },[])
 
   useEffect(() => {
@@ -118,7 +72,7 @@ const BuyToken = () => {
     {/*<ToastMessage header={"New Buy"} message={<span onClick={() => utils.openLinkInBrowser("https://etherscan.io/address/0xC36EB04C0bB9c20Ef9F4d3540870322433A1AEB5")}>Transaction</span>}></ToastMessage>*/}
 
     <div className='newuserpage-container' style={{paddingTop:0}}>
-    <AddAccount addNewAccount={addNewAccount} userAccounts={userAccounts} changeAccount={changeAccount}></AddAccount>
+    <AddAccount setCurrUserAccount={setCurrUserAccount}></AddAccount>
     <Button variant="primary" style={{marginTop:"0px",marginBottom:"15px"}} onClick={() => {
         currAccountInfo?.address && navigator.clipboard.writeText(currAccountInfo?.address);
       }}>

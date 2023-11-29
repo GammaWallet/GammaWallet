@@ -22,7 +22,6 @@ const ethers = require("ethers")
 
 interface PortfolioProps {
     currUserAccount : IUserAccount | undefined,
-    getUserData : () => void;
 }
 
 interface ITokenValueData {
@@ -49,7 +48,7 @@ interface sellSetup {
     approvalNeeded:boolean
 }
 
-const Portfolio : React.FC<PortfolioProps> = ({currUserAccount,getUserData}) => {
+const Portfolio : React.FC<PortfolioProps> = ({currUserAccount}) => {
     let [portData,setPortData] = useState<Array<ITokenValueData>>([]);
     let [portDataLoading,setPortDataLoading] = useState<boolean>(true);
     let [filteredPortData,setFilteredPortData] = useState<Array<ITokenValueData>>([]);

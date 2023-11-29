@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { IUserAccount } from '../../utils/userAccount';
 import onchain, { getAccountBalance } from '../../utils/onchain';
-import AddAccount from '../BuyToken/AddAccount';
+import AddAccount from '../../components/core/AddAccount/AddAccount';
 import utils from '../../utils/utils';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
@@ -32,8 +32,7 @@ interface AccountInfo {
 
 const TransferEth = () => {
 
-    let [userAccounts,setUserAccounts] = useState<Array<IUserAccount>>()
-    let [userGammaData,setUserGammaData] = useState<IGammaData>()
+
     let [currAccount,setCurrAccount] = useState<IUserAccount>()
     let [currAccountInfo,setCurrAccountInfo] = useState<AccountInfo>()
     let [customGas,setCustomGas] = useState<BigNumber>();
@@ -50,58 +49,17 @@ const TransferEth = () => {
         amount:0,
     });
 
-
-    const getUserData = async () => {
-        const resp = await userAccount.getGammaData()
-        ////console.log(resp)
-        setUserAccounts(resp.userAccounts)
-        setUserGammaData(resp)
-        if(resp.userAccounts.length) {
-          setCurrAccount(resp.userAccounts[0])
-        }
+    const setCurrUserAccount = async (account:IUserAccount) => {
+      setCurrAccount(account)
+    }
     
-        //await userAccount.clearGammaData()
-    
-      }
-    
-      const addNewAccount = async () => {
-        if(!userGammaData || !userAccounts) {
-          ////console.log("ERROR user data or account not found")
-          return
-        }
-        const hdNode = ethers.utils.HDNode.fromMnemonic(userGammaData?.userMnemonic)
-        const nextAddressIndex = userAccounts?.length
-        const extendedKey = hdNode.derivePath(`m/44'/60'/0'/0/${nextAddressIndex}`);
-        const privateKey = extendedKey.privateKey;
-        const address = ethers.utils.computeAddress(extendedKey.publicKey);
-        let newAccount : IUserAccount = {
-          address:address,
-          privateKey:privateKey,
-          tokens : []
-        }
-        await userAccount.setGammaData({...userGammaData,userAccounts:[...userAccounts,newAccount]})    
-        setUserGammaData({...userGammaData,userAccounts:[...userAccounts,newAccount]})
-        setUserAccounts([...userAccounts,newAccount])
-        
-        setCurrAccount(newAccount)
-        
-      }
-    
-      const changeAccount = async (newAccount:IUserAccount) => {
-        setCurrAccount(newAccount)
-      }
-    
-      const getCurrAccountInfo = async (currAccount:IUserAccount) => {
+    const getCurrAccountInfo = async (currAccount:IUserAccount) => {
         let balance = await getAccountBalance(currAccount.address)
         setCurrAccountInfo({
           address: currAccount.address,
           balance : balance
         })
       }
-    
-    useEffect(() => {
-    getUserData()
-    },[])
 
     useEffect(() => {
     if(currAccount) {
@@ -191,7 +149,7 @@ const TransferEth = () => {
             <Modal.Title>Transfer</Modal.Title>
           </Modal.Header>
             <Modal.Body className='newuserpage-modal-content'>
-            <AddAccount addNewAccount={addNewAccount} userAccounts={userAccounts} changeAccount={changeAccount}></AddAccount>
+            <AddAccount setCurrUserAccount={setCurrUserAccount}></AddAccount>
             
             <Button variant="primary" style={{marginTop:"0px",marginBottom:"15px"}} onClick={() => {
         currAccountInfo?.address && navigator.clipboard.writeText(currAccountInfo?.address);

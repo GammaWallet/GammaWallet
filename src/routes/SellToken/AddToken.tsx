@@ -10,10 +10,9 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 
 interface AddTokenProps {
     currUserAccount : IUserAccount | undefined,
-    getUserData : () => void;
 }
 
-const AddToken : React.FC<AddTokenProps> = ({currUserAccount,getUserData}) => {
+const AddToken : React.FC<AddTokenProps> = ({currUserAccount}) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -43,7 +42,6 @@ const AddToken : React.FC<AddTokenProps> = ({currUserAccount,getUserData}) => {
                     }
                 }
                 await userAccount.setGammaData(userGammaData)
-                getUserData()
                 setShow(false)
                 setToastContent(<div>Added token</div>)
                 setShowToast(true)
