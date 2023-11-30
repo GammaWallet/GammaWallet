@@ -2,7 +2,6 @@ import { IToken, IUserAccount } from '../../utils/userAccount'
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import utils from '../../utils/utils';
-import { buildRouteAndBuy, findOptimalSlippage, getTokenValue } from '../../utils/kyberSwap';
 import onchain, { getDecimals, getTokenBalance } from '../../utils/onchain';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +16,7 @@ import { KYBERSWAP_AGGREGATOR_ADDRESS } from '../../utils/constants';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { IWalletTokenBalances, buildRouteAndBuy, findOptimalSlippage, getTokenValue, getWalletTokenBalances } from '../../utils/gammaApi';
 
 const ethers = require("ethers")
 
@@ -230,25 +230,53 @@ const Portfolio : React.FC<PortfolioProps> = ({currUserAccount}) => {
         const fetchAll = async () => {
             let allTokens = currUserAccount?.tokens
             let res : ITokenValueData[]  = []
+            let tokenBalanceData : IWalletTokenBalances = []
+
+            if(currUserAccount?.address) {
+              let temp = (await getWalletTokenBalances(currUserAccount?.address))
+              if(temp.success){
+                tokenBalanceData = temp.res
+              }
+              console.log(tokenBalanceData)
+            }
+
             if(allTokens) {
                 for(const token of allTokens) {
+                
+                 let tokenBalance = 0.0
+                 let tokenBalanceUsd = 0.0
+
+                let currTokenBalanceData = tokenBalanceData.find(obj => obj.tokenAddress.toLowerCase() === token.address.toLowerCase());
+                if(currTokenBalanceData) {
+                  let currTokenBalance = ethers.BigNumber.from(currTokenBalanceData?.balance)
+                  let currTokenDecimals = currTokenBalanceData?.decimals
+                  let currTokenUsdPrice = currTokenBalanceData?.usdPrice
+                  let currTokenBalanceReal = ethers.utils.formatUnits(currTokenBalance,currTokenDecimals)
+                  tokenBalanceUsd = Math.round(currTokenBalanceReal * currTokenUsdPrice)
+                  tokenBalance = currTokenBalanceReal
+                }
+                
+
                   res.push({
                     tokenAddress : token.address,
                     tokenSymbol : token.symbol,
                     tokenName : token.name,
-                    tokenBalance : 0,
-                    tokenBalanceUsd : 0,
-                    tokenBalanceEth : 0
+                    tokenBalance : tokenBalance,
+                    tokenBalanceUsd : tokenBalanceUsd,
+                    tokenBalanceEth : 0,
                   })
                 }
             }
 
             
 
+            
+            
+
             ////console.log(allTokens)
 
-            setPortData(res)
-            setFilteredPortData(res)
+            setPortData(res.sort((a, b) => b.tokenBalanceUsd - a.tokenBalanceUsd))
+            setFilteredPortData(res.sort((a, b) => b.tokenBalanceUsd - a.tokenBalanceUsd))
 
         }
 
@@ -319,9 +347,9 @@ return (<>
             <div className="fw-bold">{item.tokenSymbol}</div>
             {utils.TruncatedText(item.tokenAddress,8)}
           </div>
-         {/** <Badge bg="primary" pill>
-            $2313.2
-  </Badge> **/}
+          <Badge bg="primary" pill>
+            ${item.tokenBalanceUsd}
+  </Badge> 
         </ListGroup.Item>
     ))} {filteredPortData.length == 0? <Button style={{marginTop:"5px"}}>No Tokens</Button>:""}</ListGroup>
     </div>

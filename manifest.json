@@ -14,6 +14,8 @@
       "icons": {
         "16": "source/images/favicon-16x16.png",
         "32": "source/images/favicon-32x32.png"
-      }
+      },
+      "host_permissions": ["https://api.gammawallet.io/*","https://mainnet.infura.io/v3/*"]
+
 
 }

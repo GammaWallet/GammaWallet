@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import onchain, { getTokenToAddData } from '../../utils/onchain';
 import utils from '../../utils/utils';
-import { buildAndSimulate, buildRouteAndBuy, findOptimalSlippage, getKyberRoute } from '../../utils/kyberSwap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +11,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-bootstrap/Spinner';
 import { faGasPump } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import {buildRouteAndBuy,findOptimalSlippage, getKyberRoute} from '../../utils/gammaApi';
 
 interface TradeProps {
     currUserAccount : IUserAccount | undefined
@@ -227,6 +227,8 @@ const Trade : React.FC<TradeProps> = ({currUserAccount}) => {
       let slippage = await findOptimalSlippage("eth",currTradeSetup.tokenAddress,currTradeSetup.amountEth,currUserAccount,Math.round(100*(currTradeSetup.maxSlippage)),currTradeSetup.mevProtection)
 
       setToastContent(<div> Executing Trade {<Spinner animation="border" size="sm"/>}</div>)
+
+
 
       let res = await buildRouteAndBuy("eth",currTradeSetup.tokenAddress,currTradeSetup.amountEth,currUserAccount,Math.round(100*(slippage)),currTradeSetup.mevProtection)
 
