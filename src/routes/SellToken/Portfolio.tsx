@@ -87,7 +87,8 @@ const Portfolio : React.FC<PortfolioProps> = ({currUserAccount}) => {
         let userTokenBalance = await getTokenBalance(currUserAccount?.address,tokenAddress)
         let decimals = await getDecimals(tokenAddress)
         let userTokenBalanceFinal = ethers.utils.formatUnits(userTokenBalance,decimals)
-        let routeData = await getTokenValue(tokenAddress,userTokenBalanceFinal)
+        let routeData = (await getTokenValue(tokenAddress,userTokenBalanceFinal)).res
+        console.log(routeData,"ffff")
         let tokenBalanceEth = 0;
         let tokenBalanceUsd = 0;
         let gasFeeUsd = 0;
@@ -246,7 +247,7 @@ const Portfolio : React.FC<PortfolioProps> = ({currUserAccount}) => {
                  let tokenBalance = 0.0
                  let tokenBalanceUsd = 0.0
 
-                let currTokenBalanceData = tokenBalanceData.find(obj => obj.tokenAddress.toLowerCase() === token.address.toLowerCase());
+                let currTokenBalanceData = tokenBalanceData.find(obj => obj.tokenAddress && obj.tokenAddress.toLowerCase() === token.address.toLowerCase());
                 if(currTokenBalanceData) {
                   let currTokenBalance = ethers.BigNumber.from(currTokenBalanceData?.balance)
                   let currTokenDecimals = currTokenBalanceData?.decimals
